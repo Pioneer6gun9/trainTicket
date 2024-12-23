@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="search-box">
+        <div class="search-header">
+            <h2>车票查询</h2>
+        </div>
+        <div class="search-form">
+            <form action="{{ url_for('search') }}" method="post">
+                <table class="search-table">
+                    <tr>
+                        <td class="label">出发地：</td>
+                        <td>
+                            <input type="text" id="departure" name="departure" required>
+                        </td>
+                        <td class="label">目的地：</td>
+                        <td>
+                            <input type="text" id="arrival" name="arrival" required>
+                        </td>
+                        <td class="label">出发日期：</td>
+                        <td>
+                            <input type="date" id="date" name="date" required>
+                        </td>
+                        <td>
+                            <button type="submit" class="query-btn">查询</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="advanced-search">
+            <button onclick="searchByType('shortest')">最短路径</button>
+            <button onclick="searchByType('cheapest')">最便宜路径</button>
+            <button onclick="searchTransfer()">中转查询</button>
+        </div>
+    </div>
+
+    <div class="result-box">
+        <table class="train-table">
+            <thead>
+                <tr>
+                    <th>车次</th>
+                    <th>出发站</th>
+                    <th>到达站</th>
+                    <th>出发时间</th>
+                    <th>到达时间</th>
+                    <th>历时</th>
+                    <th>商务座</th>
+                    <th>一等座</th>
+                    <th>二等座</th>
+                    <th>高级软卧</th>
+                    <th>软卧</th>
+                    <th>硬卧</th>
+                    <th>硬座</th>
+                </tr>
+            </thead>
+            <tbody id="train-list">
+                <!-- 列车信息将通过JavaScript动态填充 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

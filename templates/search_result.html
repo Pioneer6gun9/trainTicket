@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}查询结果{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="search-result-header">
+        <h2><i class="fas fa-search"></i> 查询结果</h2>
+        <div class="search-info">
+            <div class="route-info">
+                <span class="station departure">
+                    <i class="fas fa-map-marker-alt"></i> {{ departure }}
+                </span>
+                <span class="arrow">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </span>
+                <span class="station arrival">
+                    <i class="fas fa-map-marker"></i> {{ arrival }}
+                </span>
+            </div>
+            <div class="date-info">
+                <i class="far fa-calendar-alt"></i> {{ date }}
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-options">
+            <h3><i class="fas fa-filter"></i> 筛选选项</h3>
+            <div class="filter-group">
+                <label><input type="checkbox" class="filter" data-type="G" checked> 高铁/动车</label>
+                <label><input type="checkbox" class="filter" data-type="K" checked> 普快/快速</label>
+                <label><input type="checkbox" class="filter" data-type="T" checked> 特快</label>
+            </div>
+        </div>
+        
+        <div class="sort-options">
+            <h3><i class="fas fa-sort"></i> 排序方式</h3>
+            <div class="sort-buttons">
+                <button onclick="sortTrains('time')" class="sort-btn">
+                    <i class="far fa-clock"></i> 按时间
+                </button>
+                <button onclick="sortTrains('price')" class="sort-btn">
+                    <i class="fas fa-yen-sign"></i> 按价格
+                </button>
+                <button onclick="sortTrains('duration')" class="sort-btn">
+                    <i class="fas fa-hourglass-half"></i> 按历时
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="search-results">
+        <div class="results-table">
+            <table class="train-table">
+                <thead>
+                    <tr>
+                        <th>车次</th>
+                        <th>发站/到站</th>
+                        <th>发时/到时</th>
+                        <th>历时</th>
+                        <th>硬座</th>
+                        <th>硬卧</th>
+                        <th>软卧</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for train in trains %}
+                    <tr data-train-type="{{ train.train_type }}">
+                        <td class="train-no">
+                            <span class="train-type {{ train.train_type }}">{{ train.train_type }}</span>
+                            {{ train.train_no }}
+                        </td>
+                        <td class="stations">
+                            <div class="station-info">
+                                <div>{{ train.departure }}</div>
+                                <div>{{ train.arrival }}</div>
+                            </div>
+                        </td>
+                        <td class="times">
+                            <div class="time-info">
+                                <div>{{ train.departure_time }}</div>
+                                <div>{{ train.arrival_time }}</div>
+                            </div>
+                        </td>
+                        <td>{{ train.duration }}</td>
+                        <td class="seat-info">
+                            <div class="price">¥{{ train.price_yz }}</div>
+                            <div class="seats">余{{ train.seats_yz }}张</div>
+                        </td>
+                        <td class="seat-info">
+                            <div class="price">¥{{ train.price_yw }}</div>
+                            <div class="seats">余{{ train.seats_yw }}张</div>
+                        </td>
+                        <td class="seat-info">
+                            <div class="price">¥{{ train.price_rw }}</div>
+                            <div class="seats">余{{ train.seats_rw }}张</div>
+                        </td>
+                        <td>
+                            <button onclick="showTicketDetails('{{ train.train_no }}')" class="detail-btn">
+                                <i class="fas fa-info-circle"></i> 详情
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 车票详情弹窗 -->
+<div id="ticket-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-header">
+            <h3><i class="fas fa-ticket-alt"></i> 车票详情</h3>
+        </div>
+        <div id="ticket-details"></div>
+    </div>
+</div>
+{% endblock %} 
